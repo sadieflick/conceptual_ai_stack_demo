@@ -1,5 +1,12 @@
 import { Card } from "@/components/ui/card";
-import { Check, Circle, Loader2 } from "lucide-react";
+import { Check, Circle, Loader2, AlertTriangle, Shield } from "lucide-react";
+
+interface SecurityThreat {
+  threat: string;
+  description: string;
+  example: string;
+  severity: "high" | "medium" | "low";
+}
 
 interface PipelineStep {
   id: string;
@@ -7,15 +14,20 @@ interface PipelineStep {
   description: string;
   status: "complete" | "active" | "pending";
   details: string;
+  detailPoints?: string[];
+  technical?: string;
+  securityThreat?: SecurityThreat;
 }
 
 interface PipelineViewProps {
   steps: PipelineStep[];
   currentStep: number;
   onStepClick: (index: number) => void;
+  showSecurity?: boolean;
+  onStepDetailClick?: (step: PipelineStep) => void;
 }
 
-const PipelineView = ({ steps, currentStep, onStepClick }: PipelineViewProps) => {
+const PipelineView = ({ steps, currentStep, onStepClick, showSecurity = false, onStepDetailClick }: PipelineViewProps) => {
   return (
     <Card className="p-6">
       <div className="flex items-center gap-2 mb-6 pb-4 border-b">
@@ -71,8 +83,51 @@ const PipelineView = ({ steps, currentStep, onStepClick }: PipelineViewProps) =>
                   </p>
                   
                   {(isActive || isComplete) && (
-                    <div className="mt-3 p-3 bg-muted/50 rounded-lg border border-border animate-fade-in">
-                      <p className="text-xs text-muted-foreground">{step.details}</p>
+                    <div 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onStepDetailClick?.(step);
+                      }}
+                      className="mt-3 p-4 bg-primary/5 rounded-lg border-2 border-primary/30 animate-fade-in cursor-pointer hover:bg-primary/10 transition-colors"
+                    >
+                      <p className="text-sm font-semibold text-foreground mb-2">
+                        {step.details}
+                      </p>
+                      <p className="text-xs text-primary">Click to view detailed breakdown →</p>
+                    </div>
+                  )}
+
+                  {/* Security Threat - Inline */}
+                  {showSecurity && step.securityThreat && (isActive || isComplete) && (
+                    <div className="mt-3 p-4 bg-destructive/5 rounded-lg border-2 border-destructive/30 animate-fade-in">
+                      <div className="flex items-start gap-2 mb-2">
+                        <Shield className="w-4 h-4 text-destructive flex-shrink-0 mt-0.5" />
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-1">
+                            <h4 className="font-semibold text-sm text-destructive">
+                              {step.securityThreat.threat}
+                            </h4>
+                            <span className={`text-xs px-2 py-0.5 rounded-full ${
+                              step.securityThreat.severity === "high"
+                                ? "bg-destructive/20 text-destructive"
+                                : step.securityThreat.severity === "medium"
+                                ? "bg-orange-500/20 text-orange-600"
+                                : "bg-yellow-500/20 text-yellow-600"
+                            }`}>
+                              {step.securityThreat.severity.toUpperCase()}
+                            </span>
+                          </div>
+                          <p className="text-xs text-muted-foreground mb-2">
+                            {step.securityThreat.description}
+                          </p>
+                          <div className="bg-background/50 rounded-md p-2 border border-destructive/20">
+                            <p className="text-xs font-mono text-muted-foreground">
+                              <span className="font-semibold text-foreground">Example: </span>
+                              {step.securityThreat.example}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   )}
                 </div>
