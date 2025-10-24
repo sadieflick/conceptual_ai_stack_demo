@@ -6,7 +6,13 @@ const Welcome = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background to-primary-light/20 flex flex-col items-center justify-center p-6">
+    <div className="relative min-h-screen bg-gradient-to-b from-background to-primary-light/20 flex flex-col items-center justify-center p-6">
+      {/* Top-left logo (from public/lomo.png) */}
+      <img
+        src="/lomo.png"
+        alt="Lomo logo"
+        className="absolute top-10 left-10 w-20 h-20 md:w-28 md:h-28 rounded-md"
+      />
       <div className="max-w-5xl w-full animate-fade-in-up">
         {/* Header */}
         <div className="text-center mb-12">
