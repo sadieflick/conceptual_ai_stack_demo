@@ -16,6 +16,7 @@ interface PipelineStep {
   details: string;
   detailPoints?: string[];
   technical?: string;
+  image?: { src: string; alt: string };
   securityThreat?: SecurityThreat;
 }
 

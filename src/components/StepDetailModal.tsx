@@ -1,11 +1,11 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { CheckCircle2 } from "lucide-react";
-import prompt_processing from '../assets/images/prompt_processing.png';
 
 interface StepDetail {
   title: string;
   points: string[];
   technical: string;
+  image: { src: string, alt: string }; 
 }
 
 interface StepDetailModalProps {
@@ -16,6 +16,7 @@ interface StepDetailModalProps {
 
 const StepDetailModal = ({ isOpen, onClose, step }: StepDetailModalProps) => {
   if (!step) return null;
+  console.log("Step:", step);
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -50,11 +51,11 @@ const StepDetailModal = ({ isOpen, onClose, step }: StepDetailModalProps) => {
           {/* Visual Placeholder */}
           <div className="w-full h-48 bg-gradient-to-br from-primary/10 to-primary/5 rounded-lg border-2 border-dashed border-primary/30 flex items-center justify-center">
             <div className="text-center text-muted-foreground">
-              {/* <svg className="w-16 h-16 mx-auto mb-2 text-primary/40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-              </svg> */}
-              {<img src={prompt_processing} alt="" />}
-              {/* <p className="text-sm">Process Visualization</p> */}
+              {step.image ? (
+                <img src={step.image.src} alt={step.image.alt} />
+              ) : (
+                <p>No image available</p> // Fallback content if image is not available
+              )}
             </div>
           </div>
         </div>
