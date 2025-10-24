@@ -5,7 +5,7 @@ import { ArrowLeft } from "lucide-react";
 import ChatInterface from "@/components/ChatInterface";
 import PipelineView from "@/components/PipelineView";
 import StepDetailModal from "@/components/StepDetailModal";
-import promptProcessing from "@/assets/images/prompt_processing_img.png";
+import promptProcessing from "@/assets/prompt_processing_img.png";
 
 console.log("Prompt Processing Image:", promptProcessing);
 
@@ -195,7 +195,8 @@ const SimulationEmail = () => {
     setSelectedStep({
       title: step.title,
       points: step.detailPoints || [],
-      technical: step.technical || ""
+      technical: step.technical || "",
+      image: step.image || null,
     });
   };
 

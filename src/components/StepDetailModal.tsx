@@ -20,13 +20,17 @@ const StepDetailModal = ({ isOpen, onClose, step }: StepDetailModalProps) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl">
+      <DialogContent className="max-w-2xl" aria-describedby="step-detail-description">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-primary flex items-center gap-2">
             <CheckCircle2 className="w-6 h-6" />
             {step.title}
           </DialogTitle>
         </DialogHeader>
+        {/* Hidden description for accessibility (referenced by aria-describedby) */}
+        <div id="step-detail-description" className="sr-only">
+          {step.technical}
+        </div>
         
         <div className="space-y-6 py-4">
           {/* Key Points */}
@@ -52,9 +56,14 @@ const StepDetailModal = ({ isOpen, onClose, step }: StepDetailModalProps) => {
           <div className="w-full h-48 bg-gradient-to-br from-primary/10 to-primary/5 rounded-lg border-2 border-dashed border-primary/30 flex items-center justify-center">
             <div className="text-center text-muted-foreground">
               {step.image ? (
-                <img src={step.image.src} alt={step.image.alt} />
+                <img
+                  src={step.image.src}
+                  alt={step.image.alt}
+                  className="max-w-full max-h-40 object-contain mx-auto"
+                />
               ) : (
-                <p>No image available</p> // Fallback content if image is not available
+                <p>No image available</p>
+                /* Fallback content if image is not available */
               )}
             </div>
           </div>
